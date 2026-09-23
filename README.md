@@ -165,6 +165,43 @@ Delivery KPI cards, performance over time (on-time%/late%/review dual-axis), del
 
 ---
 
+## Dashboard Screenshots
+
+### Executive Overview
+
+![Executive Overview](screenshots/executive-overview-1.png)
+
+![Executive Overview — Business Insights](screenshots/executive-overview-2.png)
+
+### Sales & Product Analysis
+
+![Sales & Product Analysis — Overview](screenshots/sales-products-1.png)
+
+![Sales & Product Analysis — Trends](screenshots/sales-products-2.png)
+
+![Sales & Product Analysis — Seller Analysis & Insights](screenshots/sales-products-3.png)
+
+### Customer Analytics
+
+![Customer Analytics — RFM Overview](screenshots/customer-analytics-1.png)
+
+![Customer Analytics — Geography & Spending](screenshots/customer-analytics-2.png)
+
+![Customer Analytics — RFM Detail & Insights](screenshots/customer-analytics-3.png)
+
+### Delivery & Risk Analysis
+
+![Delivery & Risk — Overview](screenshots/delivery-risk-1.png)
+
+![Delivery & Risk — State & Category Analysis](screenshots/delivery-risk-2.png)
+
+![Delivery & Risk — Seller Performance & ML](screenshots/delivery-risk-3.png)
+
+![Delivery & Risk — ML Feature Effects & Confusion Matrix](screenshots/delivery-risk-4.png)
+
+![Delivery & Satisfaction Insights](screenshots/delivery-risk-5.png)
+
+---
 ## API Endpoints
 
 | Endpoint | Description |
