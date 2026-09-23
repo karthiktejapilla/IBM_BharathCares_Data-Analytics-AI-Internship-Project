@@ -1,0 +1,37 @@
+[
+  {
+    "id": "low_repeat_rate",
+    "fact": "97.0% of customers (90,557) placed exactly one delivered order. Only 3.0% (2,801) placed two or more orders.",
+    "insight": "The vast majority of Olist customers are single-purchase. Repeat customers represent 3.0% of the base but contribute 5.6% of revenue, with an average total spend of R$308.53 vs R$160.73 for one-time customers.",
+    "risk_or_opportunity": "RISK: A customer base dominated by single-purchase customers creates high dependency on continuous customer acquisition. A slowdown in new-customer growth directly impacts revenue with no repeat-purchase buffer. OPPORTUNITY: Even a modest improvement in repeat rate (e.g., from 3% to 6%) would materially increase revenue without additional acquisition spend.",
+    "recommended_action": "Implement post-purchase retention programmes (e.g., personalised follow-up emails, loyalty discounts for second orders) targeting One-Time and 'New Customers' RFM segments. Track repeat rate as a primary retention KPI."
+  },
+  {
+    "id": "champion_revenue_concentration",
+    "fact": "The 'Champions' segment contains 6,497 customers (7.0% of total), generating R$2,027,030 (13.2% of revenue). Their average total spend is R$311.99.",
+    "insight": "Champions have an average frequency of 1.18 orders and average recency of 91 days. This segment represents the most engaged and monetarily valuable customers.",
+    "risk_or_opportunity": "RISK: If Champions churn (e.g., due to service failures), revenue impact is disproportionate to their small share of the customer base. OPPORTUNITY: Champions are prime candidates for referral programmes and premium product/seller recommendations.",
+    "recommended_action": "Prioritise service quality for Champion customers. Monitor their delivery and review scores separately. Build a VIP retention programme with early access, exclusive categories, or loyalty rewards."
+  },
+  {
+    "id": "at_risk_segment",
+    "fact": "The 'At Risk' segment contains 13,162 customers (14.1%) with average recency of 394 days (have not purchased recently).",
+    "insight": "These customers previously purchased (avg frequency 1.07) with reasonable spend (avg R$243.52) but have become dormant. Their profile differs from 'Lost/Inactive' customers in that their monetary and frequency scores are relatively higher.",
+    "risk_or_opportunity": "RISK: Without intervention, At Risk customers will migrate to the 'Lost/Inactive' segment and be unrecoverable. OPPORTUNITY: Win-back campaigns targeting this segment can recover R$3,205,152 in historical spend capacity.",
+    "recommended_action": "Design a win-back campaign for At Risk customers: personalised 'We miss you' offers, category recommendations based on past purchases, or time-limited discount codes. Measure reactivation rate monthly."
+  },
+  {
+    "id": "geographic_concentration",
+    "fact": "São Paulo (SP) alone accounts for 41.9% of customers and 37.4% of revenue. The top 3 states (SP, RJ, MG) together account for 62.5% of total revenue.",
+    "insight": "Customer demand is heavily concentrated in the Southeast region. Northern and Northeastern states, despite having lower average order values, show higher late-delivery rates (Phase 3 data), suggesting that logistics infrastructure does not scale to these regions as effectively.",
+    "risk_or_opportunity": "RISK: Over-dependence on Southeast customers creates geographic revenue concentration risk. OPPORTUNITY: Improving logistics reliability in the Northeast (AL, MA, SE, CE states with >13% late rates) could unlock demand in underserved markets.",
+    "recommended_action": "Analyse seller distribution in Northeastern states and assess whether recruiting local sellers or regional fulfilment partners would reduce delivery times and stimulate demand."
+  },
+  {
+    "id": "spending_concentration",
+    "fact": "The top 10% of customers by total spend (>= R$318) contribute 38.3% of total revenue.",
+    "insight": "Median customer spend is R$107.78 while mean is R$165.17, indicating a right-skewed distribution where a minority of high-value customers generate a disproportionate share of revenue.",
+    "risk_or_opportunity": "RISK: Revenue is sensitive to the behaviour of a small high-value cohort. OPPORTUNITY: Identifying and retaining customers in the R$501-1000+ spend brackets through loyalty mechanisms has high revenue leverage.",
+    "recommended_action": "Implement a high-value customer tier (e.g., customers with lifetime spend > R$318) with dedicated account features, premium support, and priority seller matching."
+  }
+]

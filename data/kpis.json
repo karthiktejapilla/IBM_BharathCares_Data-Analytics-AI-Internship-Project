@@ -1,0 +1,18 @@
+{
+  "total_product_sales": 13221498.11,
+  "total_freight_value": 2198275.64,
+  "total_order_value": 15419773.75,
+  "total_orders": 99441,
+  "total_delivered_orders": 96478,
+  "total_customers": 96096,
+  "avg_order_value": 159.83,
+  "avg_review_score": 4.1559,
+  "on_time_delivery_pct": 93.23,
+  "late_delivery_pct": 6.77,
+  "avg_delivery_days": 12.09,
+  "repeat_customer_rate_pct": 3.0,
+  "_revenue_scope": "delivered orders only",
+  "_review_record_count": 95832,
+  "_delivery_record_count": 96470,
+  "_repeat_customer_base": 93358
+}

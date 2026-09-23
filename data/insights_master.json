@@ -1,0 +1,200 @@
+[
+  {
+    "id": "C1_onetime_retention_pattern",
+    "category": "customer",
+    "fact": "97.0% of customers (90,557) placed exactly one delivered order. Only 3.0% (2,801) placed two or more orders.",
+    "metric": "One-time customers: 90,557 (97.0%), revenue share 94.4%, avg spend R$160.73. Repeat customers: 2,801 (3.0%), revenue share 5.6%, avg total spend R$308.53, avg orders 2.114. Source: 93,358 customers with >=1 delivered order.",
+    "insight": "The observed retention pattern shows a customer base dominated by single-purchase customers. Repeat customers have a higher average total spend (R$308.53 vs R$160.73 for one-time), but a slightly lower average per-order value (R$145.95 vs R$160.73), suggesting they buy more frequently at similar or smaller basket sizes. Dataset limitation: this dataset does not contain acquisition cost or marketing spend, so no conclusions about cost-per-acquisition economics can be drawn.",
+    "type": "risk",
+    "recommendation": "Investigate post-purchase communication and retention mechanisms (e.g. personalised follow-up, category recommendations) targeting new customers in the first 30–60 days after their initial order. Track repeat-purchase rate as a primary retention KPI. Even a modest increase in repeat rate would increase total revenue without requiring additional customer acquisition.",
+    "source": "data/repeat_vs_onetime.csv, data/customer_rfm.csv",
+    "qualification": "Based on delivered orders within the dataset period (Sep 2016 - Aug 2018). The Olist marketplace model may structurally limit repeat purchasing; this pattern should be evaluated in the context of marketplace norms."
+  },
+  {
+    "id": "C2_champions_concentration",
+    "category": "customer",
+    "fact": "The 'Champions' RFM segment (6,497 customers, 7.0% of total) generated R$2,027,030 in order value, representing 13.2% of total delivered revenue.",
+    "metric": "Champions: 6,497 customers, avg spend R$311.99, avg frequency 1.180 orders, avg recency 91 days. Total delivered revenue: R$15,419,773.75.",
+    "insight": "Champions are the highest-value customer cohort by both RFM scoring and revenue contribution. They represent 7% of customers but generate 13.2% of revenue, with an average spend of R$312 and recent purchase activity (avg recency 91 days). Their disproportionate revenue contribution means their retention has an outsized impact on total platform revenue.",
+    "type": "opportunity",
+    "recommendation": "Prioritise service quality for Champions. Monitor their delivery and review scores as a separate cohort. Assess whether a VIP recognition mechanism (e.g. priority seller matching, early product access) could reinforce their engagement. Do not conflate Champions with repeat customers generally — some Champions have frequency=1 with very high monetary value.",
+    "source": "data/rfm_segment_summary.csv, data/kpis.json",
+    "qualification": "RFM segments are computed using quintile scoring on the dataset population. Segment thresholds are relative to this dataset and may shift if re-computed on a different population or time window."
+  },
+  {
+    "id": "C3_at_risk_dormant",
+    "category": "customer",
+    "fact": "The 'At Risk' RFM segment contains 13,162 customers (14.1% of total) with an average recency of 394 days. They generated R$3,205,152 in historical order value (20.8% of total).",
+    "metric": "At Risk: 13,162 customers, avg spend R$243.52, avg frequency 1.075, avg recency 394 days. Total revenue from segment: R$3,205,152.",
+    "insight": "At Risk customers have previously purchased at reasonable frequency and spend levels, but have not ordered recently relative to the dataset reference date (2018-08-30). Their profile differs from Lost/Inactive customers in that their monetary and frequency scores remain higher. The At Risk segment actually contains more total historical revenue (R$3.2M, 20.8%) than the Champions segment (R$2.0M, 13.2%), making it the highest-revenue RFM group.",
+    "type": "opportunity",
+    "recommendation": "Prioritise win-back campaigns for the At Risk segment before they migrate to Lost/Inactive status. Personalised category recommendations based on past purchase history may be more effective than generic promotions. Measure reactivation rate (defined as a second delivered order within 90 days of campaign contact) as the success metric.",
+    "source": "data/rfm_segment_summary.csv",
+    "qualification": "Recency is measured from the dataset reference date (2018-08-30). The At Risk segment's dormancy is observed within the dataset window only; it is possible that some customers continued purchasing outside this period."
+  },
+  {
+    "id": "C4_geographic_concentration",
+    "category": "customer",
+    "fact": "São Paulo (SP) accounts for 41.9% of unique customers and 37.4% of total delivered revenue. The top 3 states (SP, RJ, MG) together account for 62.5% of revenue.",
+    "metric": "SP: 39,156 customers (41.9%), revenue R$5,769,703 (37.4%), AOV R$142.46. 27 states total; source covers all of Brazil.",
+    "insight": "Customer demand is heavily concentrated in the Southeast region. States in the Northeast and North regions have a smaller share of customers and orders, though some (e.g. PB, AL, PA) show higher average order values per order — which may reflect a different product mix or limited local alternatives. SP also has the shortest observed delivery times and among the lowest late rates, which may reinforce customer activity in that state.",
+    "type": "opportunity",
+    "recommendation": "Analyse whether demand in underserved states (North and Northeast) is suppressed by logistics constraints rather than lack of consumer interest. Improving delivery reliability in high-late-rate states (AL, MA, SE, CE) may help unlock latent demand. This investigation should include seller distribution by state.",
+    "source": "data/customer_geography.csv",
+    "qualification": "The 38-customer cross-state artefact (customers appearing in >1 state due to the per-order customer_id model) has a negligible effect on these percentages."
+  },
+  {
+    "id": "C5_spending_skew",
+    "category": "customer",
+    "fact": "The top 10% of customers by total spend (lifetime order value >= R$318) contribute 38.3% of total revenue. Median customer spend is R$107.78 while mean spend is R$165.17, indicating a right-skewed distribution.",
+    "metric": "93,358 customers total. Top 10% (>=R$318): 9,336 customers, R$5,898,533 revenue (38.3% of total R$15,419,774). Median spend: R$107.78. Mean: R$165.17. p90: R$317.99. p99: R$1,097.06. Max: R$13,664.08.",
+    "insight": "A minority of high-value customers generate a disproportionate share of platform revenue. This concentration means that the platform's revenue is sensitive to the purchasing behaviour of a relatively small cohort. The spending distribution is right-skewed: most customers (62.1%) have total spend <= R$200, while 4.5% have total spend > R$500.",
+    "type": "risk",
+    "recommendation": "Implement a high-value customer tier for customers with lifetime spend > R$318 (top 10%). Focus retention and service-quality efforts on this cohort. Additionally, investigate the R$201-500 spend bracket (16.8% of customers, 29.7% of revenue) as candidates for spend-upgrade initiatives.",
+    "source": "data/customer_spending_dist.csv, data/customer_rfm.csv",
+    "qualification": "Total spend = total order value (product sales + freight) for delivered orders in the dataset period only."
+  },
+  {
+    "id": "S1_category_concentration",
+    "category": "sales",
+    "fact": "The top 5 product categories (health_beauty, watches_gifts, bed_bath_table, sports_leisure, computers_accessories) account for R$5,266,321 in product sales (39.8% of total product sales R$13,221,498).",
+    "metric": "health_beauty: R$1,233,132 (8,647 orders). watches_gifts: R$1,166,177 (5,495 orders). bed_bath_table: R$1,023,435 (9,272 orders). Total categories: 72. Total delivered product sales: R$13,221,498.11.",
+    "insight": "Product sales are moderately concentrated in the top 5 categories, which together represent just under half of total sales. Health & beauty and watches & gifts are the top two by revenue despite different order volumes, suggesting watches/gifts have higher average item prices. Bed, bath & table leads by order count (9,272) but ranks 3rd by sales value, indicating lower average item prices.",
+    "type": "opportunity",
+    "recommendation": "Use category-level profiling (AOV, review score, delivery performance) to identify categories with high order volume but below-average satisfaction or delivery reliability as candidates for targeted improvement. Categories with high AOV and good reviews (e.g. watches_gifts, cool_stuff) may be candidates for expansion or premium product promotion.",
+    "source": "data/category_performance.csv, data/kpis.json",
+    "qualification": "Based on 96,478 delivered order-item lines assigned to categories."
+  },
+  {
+    "id": "S2_seller_concentration",
+    "category": "sales",
+    "fact": "The top 10 sellers by product sales generate R$1,754,800 (13.3% of total product sales) from 2,970 total sellers.",
+    "metric": "Top 10 sellers combined sales: R$1,754,800 (13.3%). Top seller: R$226,988 (1,124 orders). Total sellers with delivered orders: 2,970. Total product sales: R$13,221,498.11.",
+    "insight": "Sales are moderately concentrated among a small number of high-volume sellers, all located in SP state. The top 10 sellers account for 13.3% of total sales from just 0.3% of sellers. This concentration means platform revenue and service quality metrics are disproportionately influenced by these sellers' performance.",
+    "type": "risk",
+    "recommendation": "Monitor the top 20-30 sellers by order volume as a separate performance cohort. Track their delivery late rate and review score monthly. If a high-volume seller shows deteriorating performance, proactive intervention (logistics support, carrier review) would have a larger-than-average platform impact.",
+    "source": "data/seller_performance.csv, data/kpis.json",
+    "qualification": "Seller performance is measured from delivered order-item data. Sellers with <50 orders are excluded from the qualified delivery analysis."
+  },
+  {
+    "id": "S3_seasonality_and_crisis",
+    "category": "sales",
+    "fact": "Order volume peaked in November 2017 at 7,544 orders (R$987,765 product sales). Three months showed late delivery rates above 10%: 2018-03 (19.0% late), 2018-02 (14.1% late), 2017-11 (12.4% late).",
+    "metric": "Peak month orders: 7,544 (2017-11). Data range: Oct 2016 – Aug 2018. Crisis months by late rate: Mar 2018 (19.0%, 7,003 orders), Feb 2018 (14.1%, 6,555 orders), Nov 2017 (12.4%, 7,288 orders).",
+    "insight": "The highest-volume month (Nov 2017, likely Black Friday period) coincides with the third-highest late-delivery rate (12.4%). The two months with the highest late rates (Feb-Mar 2018, combined 13,558 orders) show markedly lower average review scores (3.88 and 3.81 respectively vs the dataset average of 4.16). This is an observed association — the specific causes of the Feb-Mar 2018 delivery deterioration are not determinable from this dataset alone.",
+    "type": "risk",
+    "recommendation": "Implement logistics capacity planning to anticipate high-volume periods (e.g. Black Friday in November). Investigate the Feb-Mar 2018 crisis months to identify whether they reflect a specific logistics disruption, carrier capacity constraint, or other identifiable factor. Use the monthly late-rate trend as an early warning dashboard metric.",
+    "source": "data/monthly_trends.csv, data/delivery_over_time.csv",
+    "qualification": "Monthly analysis uses the order purchase timestamp, not the delivery date."
+  },
+  {
+    "id": "D1_conservative_estimates",
+    "category": "delivery",
+    "fact": "76,140 of 96,470 delivered orders (78.9%) arrived more than 7 days before the estimated delivery date. Overall on-time rate: 93.23%.",
+    "metric": "Early >7d: 76,140 (78.9%). Early 3-7d: 9,492 (9.8%). On-time (arrived on or before estimate): 93.23%. Avg delivery: 12.09 days. Median: 10.0 days. Avg delay vs estimate: -11.88 days (negative = early).",
+    "insight": "The vast majority of deliveries arrive well ahead of the communicated estimated delivery date. The average order arrives 11.88 days before its estimate (median 12 days early). This suggests that estimated delivery dates are systematically set conservatively relative to actual logistics performance. There is an observed association in this dataset between early delivery and higher review scores (avg 4.31 for Early >7d vs 4.16 overall), though other factors may contribute to this pattern.",
+    "type": "opportunity",
+    "recommendation": "Review the delivery estimation model. A more accurate, narrower delivery window communicated to customers could improve expectation management. If the estimate is deliberately conservative as a buffer, quantify the trade-off: a tighter estimate risks more 'late' classifications but may provide more useful information to customers. Begin with a controlled experiment on a subset of orders before changing platform-wide estimates.",
+    "source": "data/delivery_overview.json, data/review_by_delay_detailed.csv",
+    "qualification": "8 delivered orders with missing actual delivery dates are excluded from delay calculations. Delay = actual_delivered - estimated_delivery."
+  },
+  {
+    "id": "D2_northeast_delivery_gap",
+    "category": "delivery",
+    "fact": "Among Northeastern states with >= 200 orders, the average late delivery rate is 14.2% vs the national rate of 6.77%. AL: 21.4% (397 orders), MA: 17.4% (717), SE: 15.2% (335), PI: 13.9% (476), CE: 13.8% (1,279). Total orders in these states: 7,451.",
+    "metric": "National late rate: 6.77% (n=96,470). Northeast avg late (8 states, >=200 orders): 14.2%. Average delivery days in high-late NE states: AL=24.0, MA=21.1, SE=21.0 (national avg: 12.09 days).",
+    "insight": "Delivery performance is materially weaker across the Northeast compared to the national average. Late rates in AL, MA, and SE are 2–3x the national rate and average delivery times in these states (21-24 days) are nearly double the national median (10 days). These states also show below-average review scores (observed association — not a causal claim).",
+    "type": "risk",
+    "recommendation": "Investigate the seller and logistics network in AL, MA, SE, and CE. Determine whether the elevated late rates are driven by: (a) lack of local sellers requiring long-distance shipments, (b) specific carrier performance on Northeast routes, or (c) estimation issues in the delivery date model for these regions. Focus operational improvement on the highest-volume states (CE: 1,279 orders, BA: 3,256 orders) for maximum impact.",
+    "source": "data/delivery_by_state_enriched.csv, data/delivery_overview.json",
+    "qualification": "States with <200 orders (RR, AP, AC, AM) are excluded from 'high-impact' classification due to small sample sizes, though their late rates are noted."
+  },
+  {
+    "id": "D3_rj_high_volume_risk",
+    "category": "delivery",
+    "fact": "Rio de Janeiro (RJ) is the 2nd largest market by orders (12,350 orders, 12.1% late delivery rate, +5.3pp above national average 6.77%). Avg delivery days: 14.8 (national: 12.09).",
+    "metric": "RJ: 12,350 delivered orders, late%=12.1%, avg_delivery_days=14.8, avg_review=3.965 (national: 4.1559).",
+    "insight": "RJ has the highest absolute number of late deliveries among all states due to its combination of large order volume and above-national late rate. Its 12.1% late rate places it among the top 8 most-affected states. Its average review score (3.965) is 0.19 points below the national average, which is consistent with higher late rates (observed association).",
+    "type": "risk",
+    "recommendation": "Given RJ's order volume (12,350 orders), even a small improvement in late delivery rate would affect a meaningful number of customers. Investigate whether high-volume sellers shipping to RJ are the primary driver of late deliveries (cross-reference seller_delivery_qualified.csv for RJ-destination sellers).",
+    "source": "data/delivery_by_state_enriched.csv",
+    "qualification": "RJ customer late rate; seller origin state differs from customer destination."
+  },
+  {
+    "id": "D4_seller_delivery_concentration",
+    "category": "delivery",
+    "fact": "76 sellers (with >= 50 delivered orders each) have a late delivery rate >= 1.5x the national average (6.77%). These sellers collectively handled 10,357 orders. Their average review score is 3.873 vs national 4.1559.",
+    "metric": "Qualified sellers (>=50 orders): 425. Sellers with late% >= 1.5x national: 76. Combined orders from that group: 10,357. Min seller orders to qualify: 50.",
+    "insight": "A minority of meaningful-volume sellers show materially elevated late delivery rates. Their below-average review scores are consistent with the observed dataset-wide association between delivery delays and lower review scores. These sellers represent a concentrated source of delivery quality variance.",
+    "type": "risk",
+    "recommendation": "Establish a seller delivery performance monitoring programme. Flag sellers with >= 50 orders AND late% > 10% (1.5x national) for quarterly logistics reviews. Investigate whether late deliveries are driven by carrier choice, order fulfilment time (from order to dispatch), or destination-state effects. Consider SLA agreements with high-volume sellers.",
+    "source": "data/seller_delivery_qualified.csv",
+    "qualification": "Sellers with <50 orders are excluded to avoid small-sample ranking noise. 425 sellers qualify; the full 2,970 sellers are in seller_performance.csv."
+  },
+  {
+    "id": "D5_category_delivery_variance",
+    "category": "delivery",
+    "fact": "Several high-volume categories show above-national late delivery rates: audio (11.9%, 344 orders); home_confort (9.5%, 370 orders); fashion_underwear_beach (9.4%, 117 orders); books_technical (8.2%, 255 orders).",
+    "metric": "National late%: 6.77%. audio: 11.9% (344 orders). baby: 8.2% (2,763 orders). office_furniture: 8.1% (1,246 orders). electronics: 7.7% (2,507 orders). Low-volume threshold: <100 orders (excluded from this insight).",
+    "insight": "'baby' and 'office_furniture' are notable because of their order volume: baby has 2,763 orders at 8.2% late — meaning approximately 227 late deliveries, each potentially involving time-sensitive products for new parents. Office furniture at 8.1% late with low review scores (3.65, lowest among high-volume categories) may reflect product complexity in delivery (large, heavy items).",
+    "type": "opportunity",
+    "recommendation": "For high-volume categories with above-national late rates (baby, electronics), investigate whether category-specific logistics improvements (e.g. dedicated fulfilment for fragile/large items, specialised carriers for baby products) could reduce late rates. For office_furniture, the combination of high weight and low review score warrants a specific investigation into product delivery handling standards.",
+    "source": "data/delivery_by_category_enriched.csv",
+    "qualification": "Category assigned from first item in multi-item orders (known limitation)."
+  },
+  {
+    "id": "T1_delay_review_association",
+    "category": "satisfaction",
+    "fact": "Orders arriving >7 days early (n=75,744) have an observed average review score of 4.313 (63.4% 5-star, 6.5% 1-star). Orders arriving 4-7 days late (n=1,748) have an observed average review score of 2.105 (58.6% 1-star, 14.1% 5-star). Orders >14 days late (n=1,335): avg 1.723.",
+    "metric": "7 delay buckets, n=95,824 total. Early >7d: avg=4.313. Early 0-3d: avg=4.108. Late 1-3d: avg=3.291. Late 4-7d: avg=2.105. Late 8-14d: avg=1.671. Late >14d: avg=1.723. National avg: 4.1559.",
+    "insight": "OBSERVED ASSOCIATION: There is a strong monotonic pattern between delivery timing relative to the estimated date and customer review score. As orders become later relative to their estimate, the observed average review score decreases consistently. The sharpest single transition is between 'Early 0-3d' (4.108) and 'Late 1-3d' (3.291) — a difference of 0.817 points for orders arriving just 1-3 days past the estimate. No causal analysis has been performed; this is an observed relationship in the data.",
+    "type": "risk",
+    "recommendation": "Use delay bucket monitoring as a leading indicator of satisfaction risk. The 'Late 1-3d' bucket is the early warning threshold — once an order crosses its estimated delivery date, the associated review score pattern drops sharply. Proactive customer communication when an order is at risk of crossing its estimate (e.g. via the ML model's predictions) may help manage expectations before the review is submitted.",
+    "source": "data/review_by_delay_detailed.csv",
+    "qualification": "Review scores are from delivered orders with both review score and valid delivery delay data (n=95,824). This is an observed association only; other factors may also affect review scores."
+  },
+  {
+    "id": "T2_state_satisfaction_gap",
+    "category": "satisfaction",
+    "fact": "MA has the lowest observed average review score: 3.833 (n=712, late%=17.1%). SP has the highest: 4.246 (n=40,266, late%=4.4%). National average: 4.1559.",
+    "metric": "27 states. MA: avg=3.833, late%=17.1%, n=712. AL: avg=3.848, late%=20.8%. SP: avg=4.246, late%=4.4%, n=40,266.",
+    "insight": "States with the highest late delivery rates (MA, AL, SE) also show the lowest average review scores. The gap between the highest-scoring state (SP: 4.246) and lowest (MA: 3.833) is 0.413 points on a 5-point scale. This is an observed pattern consistent with the delay-review association found in Insight T1. Causal direction is not established from this data alone.",
+    "type": "risk",
+    "recommendation": "States with both high late rates and low review scores (MA, AL, SE) should be priorities for logistics improvement investigations. Monitor review scores by state monthly on the dashboard as a composite satisfaction indicator alongside the delivery late rate.",
+    "source": "data/review_by_state.csv, data/delivery_by_state_enriched.csv",
+    "qualification": "Sample sizes vary by state (n=40 for RR to n=40,266 for SP); interpret low-volume states with caution."
+  },
+  {
+    "id": "T3_category_satisfaction",
+    "category": "satisfaction",
+    "fact": "office_furniture has the lowest average review score among categories with >= 200 reviews: 3.650 (n=1,236, late%=8.0%, 1-star%=17.2%). books_general_interest has the highest at 4.539 (n=488).",
+    "metric": "office_furniture: avg=3.650, n=1,236, late%=8.0%, 1*%=17.2%. health_beauty (top revenue category): avg=4.235, n=8,562, 1*%=8.9%. national avg: 4.1559. Categories with >=200 reviews.",
+    "insight": "Office furniture stands out with the lowest review score (3.650) and the highest 1-star percentage (17.2%) among meaningful-volume categories. Its late delivery rate (8.0%) is above national average. This combination — low satisfaction, high 1-star rate, above-average late rate — makes it a concentrated satisfaction risk. Health & beauty (top revenue category) shows above-average reviews (4.235) and is performing well relative to its revenue contribution.",
+    "type": "risk",
+    "recommendation": "Investigate the specific complaints in 1-star reviews for office_furniture to understand whether satisfaction issues are primarily delivery-related (late, damaged), product-related (description accuracy), or service-related. Consider whether large/heavy item delivery standards need category-specific handling.",
+    "source": "data/review_by_category.csv",
+    "qualification": "Category assigned from first item in multi-item orders."
+  },
+  {
+    "id": "M1_lr_model_performance",
+    "category": "ml",
+    "fact": "On the held-out test period (May–Aug 2018, 19,294 orders, late rate 3.49%), the Logistic Regression model achieved: Recall=0.7641, Precision=0.0608, F1=0.1126, ROC-AUC=0.7066. The model identified 515 of 674 actual late orders (missed 159).",
+    "metric": "Training: 77,176 orders (late%=7.59%). Test: 19,294 orders (late%=3.49%). Cutoff: 2018-05-26. LR: accuracy=0.5793, precision=0.0608, recall=0.7641, f1=0.1126, roc_auc=0.7066. RF: roc_auc=0.5184 (near-random on test window). LR TP=515, FP=7958, FN=159, TN=10662.",
+    "insight": "The Logistic Regression model outperforms the Random Forest on this evaluation (ROC-AUC 0.7066 vs 0.5184). The RF's near-random performance on the test set is attributed to a temporal distribution shift: the test window (May–Aug 2018) has a late rate of 3.49%, while the training window had 7.59% (including the Feb-Mar 2018 crisis months). The LR's recall of 76.41% on the test period indicates it can identify the majority of late orders from information available at approval time. The LR's low precision (6.08%) means it generates many false positives, which is typical for highly imbalanced detection tasks when recall is prioritised.",
+    "type": "opportunity",
+    "recommendation": "Deploy the Logistic Regression model as an early-warning mechanism at order approval. Focus operational use on the high-recall characteristic: use flagged orders for proactive monitoring, not as guaranteed predictions of lateness. The model should NOT be presented to customers as a delivery promise. Re-evaluate model performance after accumulating 3-6 additional months of data to assess whether the temporal distribution shift is a persistent pattern.",
+    "source": "data/ml_model_metrics.json, data/ml_feature_importance.csv",
+    "qualification": "Model evaluation is on May-Aug 2018 only (low-late-rate period). Performance on higher-late-rate periods (e.g. Nov-Mar) may differ. Class imbalance (~93% on-time) addressed with class_weight=balanced. Time-based split used to avoid future-information leakage."
+  },
+  {
+    "id": "M2_predictive_features",
+    "category": "ml",
+    "fact": "The three highest-importance features in the Random Forest model are: purchase_month (0.213), customer_state_SP (0.152), total_freight_value (0.128). In the Logistic Regression, the highest-magnitude coefficients involve seller_state_MA (+2.093), customer_state_RR (+1.534), and customer_state_SP (-1.392).",
+    "metric": "RF top features (association, not causation): purchase_month=0.213, customer_state_SP=0.152, total_freight_value=0.128, customer_state_RJ=0.098, days_to_estimated=0.093. LR coefficients: positive = associated with predicted late, negative = on-time. 13 features total (10 numeric + 3 categorical). Prediction point: at/after order approval.",
+    "insight": "PREDICTIVE ASSOCIATION (not causation): Month of purchase is the strongest single predictor in the RF model, which is consistent with the observed seasonal pattern (Feb-Mar 2018 crisis months, Nov 2017 peak). Customer state features (SP negative = associated with lower late risk, RJ positive = higher late risk) are consistent with the regional delivery performance patterns identified in Phase 5. Total freight value (higher = associated with more complex/distant routes) and days_to_estimated (window length) are also predictive. These are associations in the trained model, not causal explanations.",
+    "type": "opportunity",
+    "recommendation": "The model's key drivers align with operationally actionable dimensions: seasonal planning (purchase_month), regional logistics (customer_state), and routing complexity (total_freight_value). Use these features as lenses for operational investigation rather than as model outputs alone.",
+    "source": "data/ml_feature_importance.csv, data/ml_model_metrics.json",
+    "qualification": "RF feature importance measures the reduction in impurity contributed by each feature across all trees — it reflects the model's internal weighting, not real-world causal structure. LR coefficients reflect log-odds contribution in the linear model after scaling and one-hot encoding."
+  }
+]

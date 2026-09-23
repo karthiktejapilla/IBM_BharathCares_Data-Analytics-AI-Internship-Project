@@ -1,0 +1,30 @@
+[
+  {
+    "id": "conservative_estimates",
+    "fact": "78.9% of delivered orders arrived more than 7 days before the estimated delivery date. The overall on-time rate is 93.23%.",
+    "insight": "The dataset's delivery estimates appear systematically conservative: the majority of deliveries arrive well ahead of the stated estimate. This pattern is observed consistently across the dataset, not just in a few months.",
+    "risk_or_opportunity": "OPPORTUNITY: More accurate delivery date estimates could improve customer experience by setting realistic expectations. The observed association between early delivery (>7 days early) and higher review scores (avg 4.31) vs. the overall average (4.16) is consistent with this interpretation, though other factors may also be contributing.",
+    "recommended_action": "Review the delivery estimation model. Consider presenting customers with a narrower, more accurate delivery window rather than a conservative upper bound."
+  },
+  {
+    "id": "northeast_delivery_gap",
+    "fact": "Among Northeastern states with >= 200 orders, the average late delivery rate is 13.7% (national: 6.8%). Average delivery time in these states is 20.2 days (national: 12.1 days). Total orders in scope: 9,044.",
+    "insight": "Delivery performance is materially weaker in several Northeastern states. States AL (21.41%), MA (17.43%), SE (15.22%), CE (13.76%) each show late rates more than twice the national average.",
+    "risk_or_opportunity": "RISK: Northeast customers who experience late delivery also show lower avg review scores than the national average (observed association — not a causal claim). Sustained poor delivery performance in these states may reduce repeat purchase likelihood. OPPORTUNITY: Logistics improvement in the Northeast could close the performance gap and unlock demand in currently underserved markets.",
+    "recommended_action": "Investigate the seller and logistics network coverage in AL, MA, SE, and CE. Assess whether recruiting local sellers or regional fulfilment partners would materially reduce delivery time in these states."
+  },
+  {
+    "id": "delay_review_association",
+    "fact": "Orders arriving >7 days early (n=75,744) have an observed avg review score of 4.313. Orders arriving 4–7 days late (n=1,748) have an observed avg review score of 2.105. Orders arriving >14 days late have an avg score of 1.723.",
+    "insight": "OBSERVED ASSOCIATION: There is a strong monotonic association between delivery timing relative to the estimated date and customer review score. Customers whose orders arrive later than the estimate assign materially lower scores on average. This is an observed pattern in the data; no causal analysis has been performed.",
+    "risk_or_opportunity": "RISK: Sellers and regions with high late-delivery rates are also associated with lower review scores, which may affect platform-level satisfaction metrics. OPPORTUNITY: Reducing the proportion of orders in the 'Late >7d' buckets is associated in this data with higher review scores.",
+    "recommended_action": "Use the delay-bucket analysis as an early warning system: monitor the Late 4-7d and Late >14d buckets monthly by seller and region. Prioritise logistics interventions for sellers and routes contributing most to late deliveries in those buckets."
+  },
+  {
+    "id": "seller_delivery_variance",
+    "fact": "76 sellers (with >= 50 orders) have a late delivery rate >= 1.5x the national average (6.8%). These sellers collectively handle 10,357 orders.",
+    "insight": "A subset of meaningful-volume sellers show materially elevated late delivery rates. Their average review score (3.873) is below the national average (4.156). This is an observed association.",
+    "risk_or_opportunity": "RISK: If these sellers remain unaddressed, their concentrated delivery problems represent a disproportionate source of negative customer experiences. OPPORTUNITY: Targeted performance programmes for this seller cohort could improve both platform delivery metrics and review scores.",
+    "recommended_action": "Identify and prioritise the top 20 highest-volume sellers with late_pct > 1.5x national for logistics review, SLA agreements, or carrier changes. Track their monthly late_pct as a performance KPI."
+  }
+]

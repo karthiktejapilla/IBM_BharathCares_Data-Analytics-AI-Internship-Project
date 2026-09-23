@@ -1,0 +1,63 @@
+{
+  "sklearn_version": "1.3.2",
+  "prediction_point": "at/after order approval",
+  "target": "is_late (1=delivered after estimated date)",
+  "train_orders": 77176,
+  "test_orders": 19294,
+  "train_cutoff_date": "2018-05-26",
+  "train_late_pct": 7.59,
+  "test_late_pct": 3.49,
+  "class_imbalance_note": "~93% on-time, ~7% late; class_weight=balanced used",
+  "features_used": [
+    "days_to_estimated",
+    "total_freight_value",
+    "avg_weight_g",
+    "avg_volume_cm3",
+    "order_item_count",
+    "unique_sellers",
+    "payment_installments",
+    "approval_lag_hours",
+    "purchase_month",
+    "purchase_dayofweek",
+    "customer_state",
+    "seller_state",
+    "payment_type"
+  ],
+  "features_excluded_reason": {
+    "delivery_days": "C - derived from actual delivery date",
+    "delivery_delay_days": "C - derived from actual delivery date",
+    "review_score": "C - post-delivery information",
+    "order_delivered_customer_date": "C - actual delivery date"
+  },
+  "logistic_regression": {
+    "accuracy": 0.5793,
+    "precision": 0.0608,
+    "recall": 0.7641,
+    "f1": 0.1126,
+    "roc_auc": 0.7066,
+    "confusion_matrix": {
+      "TN": 10662,
+      "FP": 7958,
+      "FN": 159,
+      "TP": 515
+    }
+  },
+  "random_forest": {
+    "accuracy": 0.8264,
+    "precision": 0.0477,
+    "recall": 0.2092,
+    "f1": 0.0777,
+    "roc_auc": 0.5184,
+    "confusion_matrix": {
+      "TN": 15804,
+      "FP": 2816,
+      "FN": 533,
+      "TP": 141
+    }
+  },
+  "risk_band_thresholds": {
+    "low": "< 0.10",
+    "medium": "0.10-0.25",
+    "high": ">= 0.25"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "n_orders": 96470,
+  "on_time_count": 89936,
+  "late_count": 6534,
+  "on_time_pct": 93.2269,
+  "late_pct": 6.7731,
+  "avg_delivery_days": 12.0936,
+  "median_delivery_days": 10.0,
+  "avg_delay_days": -11.8759,
+  "median_delay_days": -12.0,
+  "delay_bucket_counts": {
+    "Early >7d": 76140,
+    "Early 3-7d": 9492,
+    "Early 0-3d": 4304,
+    "Late 1-3d": 1870,
+    "Late 4-7d": 1802,
+    "Late 8-14d": 1478,
+    "Late >14d": 1384
+  }
+}
