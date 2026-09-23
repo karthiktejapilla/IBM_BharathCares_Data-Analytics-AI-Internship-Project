@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Olist BI Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body data-active-page="{{ active_page }}">
+
+<!-- ===================== SIDEBAR NAV ===================== -->
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <span class="brand-icon">📊</span>
+    <div class="brand-text">
+      <div class="brand-title">Olist BI</div>
+      <div class="brand-sub">Decision Support System</div>
+    </div>
+  </div>
+
+  <ul class="nav-list">
+    <li class="nav-item" data-page="executive">
+      <span class="nav-icon">🏠</span><span class="nav-label">Executive Overview</span>
+    </li>
+    <li class="nav-item" data-page="sales">
+      <span class="nav-icon">📦</span><span class="nav-label">Sales & Products</span>
+    </li>
+    <li class="nav-item" data-page="customers">
+      <span class="nav-icon">👥</span><span class="nav-label">Customer Analytics</span>
+    </li>
+    <li class="nav-item" data-page="delivery">
+      <span class="nav-icon">🚚</span><span class="nav-label">Delivery & Risk</span>
+    </li>
+  </ul>
+
+  <div class="sidebar-footer">
+    <div class="dataset-badge">Brazilian E-Commerce · Olist</div>
+    <div class="dataset-range" id="datasetRange">Oct 2016 – Aug 2018</div>
+  </div>
+</nav>
+
+<!-- ===================== MAIN CONTENT ===================== -->
+<main class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-title" id="pageTitle">Executive Overview</div>
+    <div class="topbar-right">
+      <div class="filter-group" id="globalFilters">
+        <select id="filterState" class="filter-select" multiple title="Filter by customer state">
+          <option value="">All States</option>
+        </select>
+        <select id="filterCategory" class="filter-select" title="Filter by category">
+          <option value="">All Categories</option>
+        </select>
+        <button class="btn-apply" id="btnApplyFilters">Apply Filters</button>
+        <button class="btn-reset" id="btnResetFilters">Reset</button>
+      </div>
+      <div class="filter-scope-note">
+        KPI cards &amp; RFM metrics use the full validated dataset.
+        State / category filters apply to analytical charts only.
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ PAGE: EXECUTIVE ============ -->
+  <div class="page" id="page-executive">
+    <div class="page-header">
+      <h1 class="page-h1">Executive Overview</h1>
+      <p class="page-sub">AI-Powered E-Commerce Business Intelligence &amp; Decision Support System</p>
+    </div>
+
+    <!-- KPI Cards -->
+    <section class="section">
+      <div class="kpi-grid" id="kpiGrid">
+        <div class="kpi-card loading" id="kpi-product-sales">
+          <div class="kpi-label">Total Product Sales</div>
+          <div class="kpi-value" id="v-product-sales">–</div>
+          <div class="kpi-sub">Delivered orders</div>
+        </div>
+        <div class="kpi-card loading" id="kpi-order-value">
+          <div class="kpi-label">Total Order Value</div>
+          <div class="kpi-value" id="v-order-value">–</div>
+          <div class="kpi-sub">Sales + Freight</div>
+        </div>
+        <div class="kpi-card loading" id="kpi-orders">
+          <div class="kpi-label">Total Orders</div>
+          <div class="kpi-value" id="v-orders">–</div>
+          <div class="kpi-sub">All statuses</div>
+        </div>
+        <div class="kpi-card loading" id="kpi-delivered">
+          <div class="kpi-label">Delivered Orders</div>
+          <div class="kpi-value" id="v-delivered">–</div>
+          <div class="kpi-sub">Status = delivered</div>
+        </div>
+        <div class="kpi-card loading" id="kpi-customers">
+          <div class="kpi-label">Unique Customers</div>
+          <div class="kpi-value" id="v-customers">–</div>
+          <div class="kpi-sub">customer_unique_id</div>
+        </div>
+        <div class="kpi-card loading" id="kpi-aov">
+          <div class="kpi-label">Avg Order Value</div>
+          <div class="kpi-value" id="v-aov">–</div>
+          <div class="kpi-sub">Delivered orders</div>
+        </div>
+        <div class="kpi-card loading kpi-review" id="kpi-review">
+          <div class="kpi-label">Avg Review Score</div>
+          <div class="kpi-value" id="v-review">–</div>
+          <div class="kpi-sub">/ 5.0</div>
+        </div>
+        <div class="kpi-card loading kpi-ontime" id="kpi-ontime">
+          <div class="kpi-label">On-Time Delivery</div>
+          <div class="kpi-value" id="v-ontime">–</div>
+          <div class="kpi-sub">vs estimated date</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Charts Row 1 -->
+    <section class="section">
+      <div class="chart-row">
+        <div class="chart-card half">
+          <div class="chart-title">Monthly Product Sales (R$)</div>
+          <div id="chartMonthlySales" class="chart-container"></div>
+        </div>
+        <div class="chart-card half">
+          <div class="chart-title">Monthly Order Volume</div>
+          <div id="chartMonthlyOrders" class="chart-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Charts Row 2 -->
+    <section class="section">
+      <div class="chart-row">
+        <div class="chart-card half">
+          <div class="chart-title">Top 15 Categories by Product Sales (R$)</div>
+          <div id="chartCategorySales" class="chart-container chart-tall"></div>
+        </div>
+        <div class="chart-card half">
+          <div class="chart-title">Product Sales by Customer State (R$)</div>
+          <div id="chartStateSales" class="chart-container chart-tall"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Insights -->
+    <section class="section">
+      <h2 class="section-title">Business Insights</h2>
+      <div class="insight-tabs">
+        <button class="insight-tab active" data-filter="all">All (18)</button>
+        <button class="insight-tab" data-filter="risk">Risks</button>
+        <button class="insight-tab" data-filter="opportunity">Opportunities</button>
+      </div>
+      <div class="insight-grid" id="execInsightGrid"></div>
+    </section>
+  </div>
+
+  <!-- ============ PAGE: SALES ============ -->
+  <div class="page hidden" id="page-sales">
+    <div class="page-header">
+      <h1 class="page-h1">Sales &amp; Product Analysis</h1>
+      <p class="page-sub">Category performance · Regional sales · Seller analysis · Trends</p>
+    </div>
+
+    <section class="section">
+      <div class="chart-row">
+        <div class="chart-card half">
+          <div class="chart-title">Product Sales by Category (R$) — Top 20</div>
+          <div id="chartSalesByCat" class="chart-container chart-tall"></div>
+        </div>
+        <div class="chart-card half">
+          <div class="chart-title">Orders by Category — Top 20</div>
+          <div id="chartOrdersByCat" class="chart-container chart-tall"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="chart-row">
+        <div class="chart-card half">
+          <div class="chart-title">Avg Order Value by Category (R$) — Top 20</div>
+          <div id="chartAovByCat" class="chart-container chart-tall"></div>
+        </div>
+        <div class="chart-card half">
+          <div class="chart-title">Avg Review Score by Category — Top 20</div>
+          <div id="chartReviewByCat" class="chart-container chart-tall"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="chart-row">
+        <div class="chart-card two-thirds">
+          <div class="chart-title">Monthly Product Sales Trend (R$)</div>
+          <div id="chartSalesTrend" class="chart-container"></div>
+        </div>
+        <div class="chart-card one-third">
+          <div class="chart-title">Sales by Customer State — Top 15</div>
+          <div id="chartSalesByState" class="chart-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="chart-card full">
+        <div class="chart-title">Top 20 Sellers by Product Sales (R$) — Qualified sellers (≥50 orders)</div>
+        <div id="chartTopSellers" class="chart-container"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Sales Insights</h2>
+      <div class="insight-grid" id="salesInsightGrid"></div>
+    </section>
+  </div>
+
+  <!-- ============ PAGE: CUSTOMERS ============ -->
+  <div class="page hidden" id="page-customers">
+    <div class="page-header">
+      <h1 class="page-h1">Customer Analytics</h1>
+      <p class="page-sub">RFM segmentation · Retention · Geography · Spending</p>
+    </div>
+
+    <div class="definition-bar">
+      <strong>Note:</strong> All customer counts use <code>customer_unique_id</code> (person-level identifier).
+      Revenue = Order Value (Product Sales + Freight). Scope: delivered orders only.
+    </div>
+
+    <section class="section">
+      <div class="chart-row">
+        <div class="chart-card half">
+          <div class="chart-title">RFM Segment Distribution (Customers)</div>
+          <div id="chartRfmPie" class="chart-container"></div>
+        </div>
+        <div class="chart-card half">
+          <div class="chart-title">Revenue by RFM Segment (R$)</div>
+          <div id="chartRfmRevenue" class="chart-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="chart-row">
+        <div class="chart-card half">
+          <div class="chart-title">Avg &amp; Median Spend by RFM Segment (R$)</div>
+          <div id="chartSegmentSpend" class="chart-container"></div>
+        </div>
+        <div class="chart-card half">
+          <div class="chart-title">One-Time vs Repeat Customers</div>
+          <div id="chartRepeat" class="chart-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="chart-row">
+        <div class="chart-card half">
+          <div class="chart-title">Customer Count by State</div>
+          <div id="chartCustByState" class="chart-container chart-tall"></div>
+        </div>
+        <div class="chart-card half">
+          <div class="chart-title">Revenue by Customer State (R$)</div>
+          <div id="chartRevByState" class="chart-container chart-tall"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="chart-card full">
+        <div class="chart-title">Customer Spending Distribution</div>
+        <div id="chartSpendDist" class="chart-container"></div>
+      </div>
+    </section>
+
+    <!-- RFM Segment Detail Table -->
+    <section class="section">
+      <div class="chart-card full">
+        <div class="chart-title">RFM Segment Detail</div>
+        <div class="table-wrapper">
+          <table class="data-table" id="rfmTable">
+            <thead>
+              <tr>
+                <th>Segment</th><th>Customers</th><th>% of Total</th>
+                <th>Revenue (R$)</th><th>Revenue %</th>
+                <th>Avg Spend (R$)</th><th>Median Spend (R$)</th>
+                <th>Avg Orders</th><th>Avg Recency (days)</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Customer Insights</h2>
+      <div class="insight-grid" id="custInsightGrid"></div>
+    </section>
+  </div>
+
+  <!-- ============ PAGE: DELIVERY ============ -->
+  <div class="page hidden" id="page-delivery">
+    <div class="page-header">
+      <h1 class="page-h1">Delivery &amp; Risk Analysis</h1>
+      <p class="page-sub">Delivery performance · Regional analysis · Seller risk · Customer satisfaction</p>
+    </div>
+
+    <!-- Delivery KPI Cards -->
+    <section class="section">
+      <div class="kpi-grid kpi-grid-6">
+        <div class="kpi-card kpi-ontime">
+          <div class="kpi-label">On-Time Delivery</div>
+          <div class="kpi-value" id="d-ontime">–</div>
+          <div class="kpi-sub">Delivered orders</div>
+        </div>
+        <div class="kpi-card kpi-late">
+          <div class="kpi-label">Late Delivery</div>
+          <div class="kpi-value" id="d-late">–</div>
+          <div class="kpi-sub">After estimated date</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Avg Delivery Days</div>
+          <div class="kpi-value" id="d-avgdays">–</div>
+          <div class="kpi-sub">From purchase</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Median Delivery Days</div>
+          <div class="kpi-value" id="d-meddays">–</div>
+          <div class="kpi-sub">From purchase</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Avg Days Early</div>
+          <div class="kpi-value" id="d-early">–</div>
+          <div class="kpi-sub">vs estimate (negative = early)</div>
+        </div>
+        <div class="kpi-card kpi-review">
+          <div class="kpi-label">Avg Review Score</div>
+          <div class="kpi-value" id="d-review">–</div>
+          <div class="kpi-sub">/ 5.0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Delivery Charts -->
+    <section class="section">
+      <div class="chart-row">
+        <div class="chart-card two-thirds">
+          <div class="chart-title">Delivery Performance Over Time</div>
+          <div id="chartDelTime" class="chart-container"></div>
+        </div>
+        <div class="chart-card one-third">
+          <div class="chart-title">Delivery Delay Distribution</div>
+          <div id="chartDelayDist" class="chart-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="chart-row">
+        <div class="chart-card half">
+          <div class="chart-title">Late Delivery % by Customer State</div>
+          <div id="chartDelByState" class="chart-container chart-tall"></div>
+        </div>
+        <div class="chart-card half">
+          <div class="chart-title">Late Delivery % by Category — Top 20 (≥100 orders)</div>
+          <div id="chartDelByCat" class="chart-container chart-tall"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="chart-card full">
+        <div class="chart-title">
+          Review Score by Delivery Delay Bucket
+          <span class="chart-badge">Observed Association — not a causal claim</span>
+        </div>
+        <div id="chartRevDelay" class="chart-container"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="chart-card full">
+        <div class="chart-title">Qualified Sellers — Delivery Performance (≥50 orders, sorted by Late %)</div>
+        <div id="chartSellerDel" class="chart-container"></div>
+      </div>
+    </section>
+
+    <!-- ML Section -->
+    <section class="section">
+      <h2 class="section-title">ML Model — Late Delivery Prediction</h2>
+      <div class="ml-banner">
+        <div class="ml-scenario">
+          <strong>Prediction Point:</strong> At order approval, using information available before any delivery event.
+          <strong>Target:</strong> Will this order arrive after its estimated delivery date?
+          <strong>Test Period:</strong> May–August 2018 (held-out, time-based split).
+        </div>
+      </div>
+
+      <div class="kpi-grid kpi-grid-ml">
+        <div class="kpi-card kpi-ml">
+          <div class="kpi-label">Logistic Regression ROC-AUC</div>
+          <div class="kpi-value" id="ml-lr-auc">–</div>
+          <div class="kpi-sub">Best model (vs RF: 0.5184)</div>
+        </div>
+        <div class="kpi-card kpi-ml">
+          <div class="kpi-label">Recall (LR)</div>
+          <div class="kpi-value" id="ml-lr-recall">–</div>
+          <div class="kpi-sub">Late orders identified</div>
+        </div>
+        <div class="kpi-card kpi-ml">
+          <div class="kpi-label">Precision (LR)</div>
+          <div class="kpi-value" id="ml-lr-precision">–</div>
+          <div class="kpi-sub">Of flagged, truly late</div>
+        </div>
+        <div class="kpi-card kpi-ml">
+          <div class="kpi-label">F1-Score (LR)</div>
+          <div class="kpi-value" id="ml-lr-f1">–</div>
+          <div class="kpi-sub">Harmonic mean</div>
+        </div>
+      </div>
+
+      <div class="ml-note">
+        <strong>Interpretation:</strong> On the held-out May–August 2018 test period, the Logistic Regression model
+        achieved 76.41% recall — meaning it identified approximately 76% of orders that were actually late,
+        using only information available at order approval. Precision is low (6.08%) due to class imbalance
+        (~93% of orders are on-time). The Random Forest achieved near-random AUC (0.52) on this test window
+        due to a temporal distribution shift (test period had lower late rates than training). These results
+        apply to the specific test period and should not be interpreted as guaranteed future performance.
+        The model is intended as an <em>early-warning mechanism</em>, not a delivery guarantee.
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-card half">
+          <div class="chart-title">RF Feature Importance (Top 15) — Predictive Association Only</div>
+          <div id="chartMlFI" class="chart-container chart-tall"></div>
+        </div>
+        <div class="chart-card half">
+          <div class="chart-title">Logistic Regression Feature Effects (Top 15 by |Coefficient|)</div>
+          <div class="chart-subtitle">Positive = higher predicted late probability &nbsp;·&nbsp; Negative = lower. These are model associations, not causal effects.</div>
+          <div id="chartMlLRCoef" class="chart-container chart-tall"></div>
+        </div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-card half">
+          <div class="chart-title">Confusion Matrix — Logistic Regression</div>
+          <div id="chartMlCM" class="chart-container"></div>
+        </div>
+        <div class="chart-card half">
+          <div class="chart-title">ML Risk Bands — Probability Tertiles</div>
+          <div class="ml-note ml-note-warning">
+            <strong>Note:</strong> Risk bands split orders into tertiles by predicted late probability.
+            On the May–Aug 2018 test window, band actual late rates were not strictly monotonic
+            (Low 3.55% / Medium 3.28% / High 3.64%), indicating limited operational reliability
+            on this test period. <em>These bands are experimental and not validated for operational use.</em>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Delivery Insights -->
+    <section class="section">
+      <h2 class="section-title">Delivery &amp; Satisfaction Insights</h2>
+      <div class="insight-grid" id="delivInsightGrid"></div>
+    </section>
+  </div>
+
+  <!-- Loading overlay -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading data...</div>
+  </div>
+
+</main>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
